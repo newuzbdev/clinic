@@ -10,8 +10,9 @@ export const routes = createBrowserRouter([
        children: [
             {
                 index: true,
-                element: <Suspense>
-                    <LazyDashboard />
+                element:
+                 <Suspense>
+                      <LazyDashboard />
                 </Suspense>,
             },
         ]

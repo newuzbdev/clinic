@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { AppShell, ScrollArea, Text, UnstyledButton, Group, rem, ActionIcon } from "@mantine/core"
+import { Link, useLocation } from "react-router-dom"
 import {
   LayoutDashboard,
   Users,
@@ -22,13 +23,16 @@ import { useSidebar } from "../hooks/use-sidebar"
 interface NavItemProps {
   icon: React.ComponentType<any>
   label: string
+  to: string
   active?: boolean
   onClick?: () => void
 }
 
-function NavItem({ icon: Icon, label, active, onClick }: NavItemProps) {
+function NavItem({ icon: Icon, label, to, active, onClick }: NavItemProps) {
   return (
     <UnstyledButton
+      component={Link as any}
+      to={to}
       onClick={onClick}
       style={{
         display: "block",
@@ -39,6 +43,7 @@ function NavItem({ icon: Icon, label, active, onClick }: NavItemProps) {
         backgroundColor: active ? "#e7f5ff" : "transparent",
         fontSize: rem(14),
         marginBottom: rem(4),
+        textDecoration: "none",
       }}
     >
       <Group gap="sm">
@@ -56,12 +61,13 @@ interface NavSectionProps {
   items: Array<{
     icon: React.ComponentType<any>
     label: string
-    active?: boolean
+    to: string
     key: string
   }>
+  currentPath: string
 }
 
-function NavSection({ title, items }: NavSectionProps) {
+function NavSection({ title, items, currentPath }: NavSectionProps) {
   const { setHeaderTitle } = useHeaderTitle()
 
   return (
@@ -81,9 +87,11 @@ function NavSection({ title, items }: NavSectionProps) {
       {items.map((item) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { key, ...rest } = item;
+        const isActive = item.to === currentPath || (item.to !== '/' && currentPath.startsWith(item.to));
         return (
           <NavItem
             {...rest}
+            active={isActive}
             onClick={() => setHeaderTitle(item.label)}
             key={key}
           />
@@ -96,27 +104,32 @@ function NavSection({ title, items }: NavSectionProps) {
 
 export function Sidebar() {
   const { collapsed, toggleSidebar } = useSidebar()
+  const location = useLocation()
+  const currentPath = location.pathname
 
   const mainMenuItems = [
-    { icon: LayoutDashboard, label: "Dashboard", active: true, key: "dashboard" },
-
+    { icon: LayoutDashboard, label: "Dashboard", to: "/", key: "dashboard" },
   ]
 
-  const applicationItems = [{ icon: Settings, label: "Layouts", active: false, key: "layouts" }]
+  const applicationItems = [
+    { icon: Settings, label: "Layouts", to: "/layouts", key: "layouts" },
+  ]
 
   const clinicItems = [
-    { icon: Stethoscope, label: "Doctors", active: false, key: "doctors" },
-    { icon: Users, label: "Patients", active: false, key: "patients" },
-    { icon: Calendar, label: "Appointments", active: false, key: "appointments" },
-    { icon: MapPin, label: "Locations", active: false, key: "locations" },
-    { icon: Stethoscope, label: "Services", active: false, key: "services" },
-    { icon: Settings, label: "Specializations", active: false, key: "specializations" },
-    { icon: Settings, label: "Assets", active: false, key: "assets" },
-    { icon: Activity, label: "Activities", active: false, key: "activities" },
-    { icon: MessageSquare, label: "Messages", active: false, key: "messages" },
+    { icon: Stethoscope, label: "Doctors", to: "/doctors", key: "doctors" },
+    { icon: Users, label: "Patients", to: "/patients", key: "patients" },
+    { icon: Calendar, label: "Appointments", to: "/appointments", key: "appointments" },
+    { icon: MapPin, label: "Locations", to: "/locations", key: "locations" },
+    { icon: Stethoscope, label: "Services", to: "/services", key: "services" },
+    { icon: Settings, label: "Specializations", to: "/specializations", key: "specializations" },
+    { icon: Settings, label: "Assets", to: "/assets", key: "assets" },
+    { icon: Activity, label: "Activities", to: "/activities", key: "activities" },
+    { icon: MessageSquare, label: "Messages", to: "/messages", key: "messages" },
   ]
 
-  const hrmItems = [{ icon: UserCheck, label: "Staffs", active: false, key: "staffs" }]
+  const hrmItems = [
+    { icon: UserCheck, label: "Staffs", to: "/staffs", key: "staffs" },
+  ]
 
   return (
     <>
@@ -179,10 +192,10 @@ export function Sidebar() {
         </div>
 
         <ScrollArea style={{ flex: 1 }} p="md">
-          <NavSection title="Main Menu" items={mainMenuItems} />
-          <NavSection title="Applications" items={applicationItems} />
-          <NavSection title="Clinic" items={clinicItems} />
-          <NavSection title="HRM" items={hrmItems} />
+          <NavSection title="Main Menu" items={mainMenuItems} currentPath={currentPath} />
+          <NavSection title="Applications" items={applicationItems} currentPath={currentPath} />
+          <NavSection title="Clinic" items={clinicItems} currentPath={currentPath} />
+          <NavSection title="HRM" items={hrmItems} currentPath={currentPath} />
         </ScrollArea>
       </AppShell.Navbar>
     </>
