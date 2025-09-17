@@ -27,7 +27,6 @@ function App() {
           },
           other: { colorScheme },
         }}
-        forceColorScheme={colorScheme}
       >
         <Notifications position="bottom-right" />
         <RouterProviders />

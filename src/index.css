@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+html[data-mantine-color-scheme='dark'] body {
+	background: #1d1e30 !important;
+	color: #d5d7e0;
+	transition: background 0.3s;
+}
+html[data-mantine-color-scheme='light'] body {
+	background: #fff !important;
+	color: #000;
+	transition: background 0.3s;
+}

@@ -2,6 +2,7 @@
 
 
 import { AppShell, Group, Text, TextInput, ActionIcon, Menu, Avatar, UnstyledButton } from "@mantine/core"
+import { useColorScheme } from "../providers/color-scheme-context";
 import { useSidebar } from "../hooks/use-sidebar"
 import { useHeaderTitle } from "../providers/header-title-provider"
 import { Menu as IconMenu2, Search as IconSearch, Bell as IconBell, Sun as IconSun, ChevronDown as IconChevronDown, User as IconUser, Settings as IconSettings, LogOut as IconLogout } from "lucide-react"
@@ -10,6 +11,9 @@ import { Menu as IconMenu2, Search as IconSearch, Bell as IconBell, Sun as IconS
 export function Header() {
   const { toggleSidebar } = useSidebar()
   const { headerTitle } = useHeaderTitle()
+
+  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const isDark = colorScheme === 'dark';
 
   return (
     <AppShell.Header>
@@ -35,8 +39,8 @@ export function Header() {
             <IconBell size={18} />
           </ActionIcon>
 
-          <ActionIcon variant="subtle" size="lg">
-            <IconSun size={18} />
+          <ActionIcon variant="subtle" size="lg" onClick={toggleColorScheme} title="Toggle color scheme">
+            <IconSun size={18} color={isDark ? '#facc15' : undefined} />
           </ActionIcon>
 
           <Menu shadow="md" width={200}>
