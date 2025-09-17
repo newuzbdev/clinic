@@ -1,7 +1,3 @@
-"use client"
-
-import type React from "react"
-
 import { AppShell } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks"
 import { Sidebar } from "./sidebar"
@@ -16,7 +12,7 @@ interface MainLayoutProps {
   workspace?: "personal" | "organization"
 }
 
-export function MainLayout({ children, workspace = "personal" }: MainLayoutProps) {
+export function MainLayout({ children }: MainLayoutProps) {
   const { width } = useViewportSize()
   const { isLg, setLg, collapsed } = useSidebar()
 

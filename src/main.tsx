@@ -10,6 +10,6 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <MantineProvider >
       <RouterProviders />
-    </MantineProvider>;
-  </StrictMode>,
+    </MantineProvider>
+  </StrictMode>
 )

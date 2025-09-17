@@ -86,7 +86,7 @@ function NavSection({ title, items, currentPath }: NavSectionProps) {
       </Text>
       {items.map((item) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { key, ...rest } = item;
+        const { key, ...rest } = item
         const isActive = item.to === currentPath || (item.to !== '/' && currentPath.startsWith(item.to));
         return (
           <NavItem
@@ -95,7 +95,7 @@ function NavSection({ title, items, currentPath }: NavSectionProps) {
             onClick={() => setHeaderTitle(item.label)}
             key={key}
           />
-        );
+        )
       })}
     </div>
   )
