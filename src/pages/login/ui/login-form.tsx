@@ -1,16 +1,32 @@
 import { TextInput, PasswordInput, Checkbox, Button, Paper, Title, Text, Anchor } from "@mantine/core"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { showNotification } from "@mantine/notifications";
 
 const LoginForm = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [rememberMe, setRememberMe] = useState(false)
+    const navigate = useNavigate();
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        // Handle login logic here
-        console.log("Login attempt:", { email, password, rememberMe })
+        e.preventDefault();
+        // Fake login: if admin/admin, set user as admin
+        if (email === "admin" && password === "admin") {
+            localStorage.setItem("user", JSON.stringify({ role: "admin" }));
+            showNotification({
+                message: "Login successful!",
+                color: "green",
+            });
+            navigate("/");
+        } else {
+            showNotification({
+                message: "Invalid credentials. ",
+                color: "red",
+              
+            });
+        }
     }
 
     return (

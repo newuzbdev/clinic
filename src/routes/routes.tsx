@@ -3,28 +3,35 @@ import { LazyDashboard } from "./lazy";
 import { Suspense } from "../shared/suspense";
 import { MainLayout } from "../shared/layout";
 import Login from "../pages/login/login";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 export const routes = createBrowserRouter([
     {
-        path: '/login',
+        path: "/login",
         element: (
             <Suspense>
                 <Login />
             </Suspense>
-        )
+        ),
     },
-    
+
     {
-        path: '/',
-        element: <MainLayout children={undefined} />,
+        element: <ProtectedRoute allowedRole="admin" />, // all below are protected
         children: [
             {
-                index: true,
-                element:
-                 <Suspense>
-                      <LazyDashboard />
-                </Suspense>,
+                path: "/",
+                element: <MainLayout children={undefined} />,
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense>
+                                <LazyDashboard />
+                            </Suspense>
+                        ),
+                    },
+                ],
             },
-        ]
+        ],
     },
-])
+]);
