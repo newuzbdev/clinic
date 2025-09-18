@@ -1,20 +1,17 @@
-"use client"
-
-import type React from "react"
-
 import { AppShell, ScrollArea, Text, UnstyledButton, Group, rem, ActionIcon } from "@mantine/core"
 import { Link, useLocation } from "react-router-dom"
 import {
   LayoutDashboard,
   Users,
-  Calendar,
   MapPin,
   Stethoscope,
-  Settings,
-  MessageSquare,
-  UserCheck,
   Activity,
   X,
+  Building2,
+  DoorOpen,
+  BriefcaseMedical,
+  Share2,
+  UserCog,
 } from "lucide-react"
 import { useHeaderTitle } from "../providers/header-title-provider"
 import { useSidebar } from "../hooks/use-sidebar"
@@ -87,7 +84,10 @@ function NavSection({ title, items, currentPath }: NavSectionProps) {
       {items.map((item) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { key, ...rest } = item
-        const isActive = item.to === currentPath || (item.to !== '/' && currentPath.startsWith(item.to));
+        const isActive =
+          item.to === currentPath ||
+          (item.to !== "/" &&
+            (currentPath === item.to || currentPath.startsWith(item.to + "/")));
         return (
           <NavItem
             {...rest}
@@ -111,25 +111,21 @@ export function Sidebar() {
     { icon: LayoutDashboard, label: "Dashboard", to: "/", key: "dashboard" },
   ]
 
-  const applicationItems = [
-    { icon: Settings, label: "Layouts", to: "/layouts", key: "layouts" },
-  ]
-
   const clinicItems = [
     { icon: Stethoscope, label: "Doctors", to: "/doctors", key: "doctors" },
-    { icon: Users, label: "Patients", to: "/patients", key: "patients" },
-    { icon: Calendar, label: "Appointments", to: "/appointments", key: "appointments" },
-    { icon: MapPin, label: "Locations", to: "/locations", key: "locations" },
-    { icon: Stethoscope, label: "Services", to: "/services", key: "services" },
-    { icon: Settings, label: "Specializations", to: "/specializations", key: "specializations" },
-    { icon: Settings, label: "Assets", to: "/assets", key: "assets" },
-    { icon: Activity, label: "Activities", to: "/activities", key: "activities" },
-    { icon: MessageSquare, label: "Messages", to: "/messages", key: "messages" },
+    { icon: Users, label: "Clients", to: "/clients", key: "clients" },
+    { icon: Building2, label: "Departments", to: "/departments", key: "departments" },
+    { icon: MapPin, label: "Visit", to: "/visit", key: "visit" },
+    { icon: DoorOpen, label: "Visit Rooms", to: "/visit-rooms", key: "visit-rooms" },
+    { icon: BriefcaseMedical, label: "Services", to: "/services", key: "services" },
+    { icon: Share2, label: "Referal", to: "/referal", key: "referal" },
+    { icon: Activity, label: "Rooms", to: "/rooms", key: "rooms" },
+    { icon: UserCog, label: "Users", to: "/users", key: "users" },
   ]
 
-  const hrmItems = [
-    { icon: UserCheck, label: "Staffs", to: "/staffs", key: "staffs" },
-  ]
+  // const hrmItems = [
+  //   { icon: UserCheck, label: "Staffs", to: "/staffs", key: "staffs" },
+  // ]
 
   return (
     <>
@@ -179,23 +175,21 @@ export function Sidebar() {
                 </Text>
               </div>
               <Text size="sm" fw={600}>
-                Trustcare Clinic
+                Dilmurod Clinic
               </Text>
             </Group>
             <ActionIcon variant="subtle" size="sm" onClick={toggleSidebar} className="lg:hidden">
               <X size={16} />
             </ActionIcon>
           </Group>
-          <Text size="xs" c="dimmed" mt={4}>
-            Las vegas
-          </Text>
+
         </div>
 
         <ScrollArea style={{ flex: 1 }} p="md">
           <NavSection title="Main Menu" items={mainMenuItems} currentPath={currentPath} />
-          <NavSection title="Applications" items={applicationItems} currentPath={currentPath} />
+          {/* <NavSection title="Applications" items={applicationItems} currentPath={currentPath} /> */}
           <NavSection title="Clinic" items={clinicItems} currentPath={currentPath} />
-          <NavSection title="HRM" items={hrmItems} currentPath={currentPath} />
+          {/* <NavSection title="HRM" items={hrmItems} currentPath={currentPath} /> */}
         </ScrollArea>
       </AppShell.Navbar>
     </>
