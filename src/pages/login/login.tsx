@@ -16,7 +16,7 @@ const Login = () => {
                                     </svg>
                                 </div>
                             </div>
-                            <span className="text-xl font-semibold text-gray-900">Dclinic</span>
+                            <span className="text-xl font-semibold text-gray-900">MediCRM</span>
                         </div>
                     </div>
 
@@ -25,7 +25,7 @@ const Login = () => {
 
                     {/* Footer */}
                     <div className="text-center mt-8">
-                        <Text className="text-xs text-gray-500">Copyright © 2025 - Dclinic</Text>
+                        <Text className="text-xs text-gray-500">Copyright © 2025 - MediCRM</Text>
                     </div>
                 </div>
             </div>

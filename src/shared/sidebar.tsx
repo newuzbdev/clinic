@@ -175,7 +175,7 @@ export function Sidebar() {
                 </Text>
               </div>
               <Text size="sm" fw={600}>
-                Dilmurod Clinic
+                MediCRM 
               </Text>
             </Group>
             <ActionIcon variant="subtle" size="sm" onClick={toggleSidebar} className="lg:hidden">
