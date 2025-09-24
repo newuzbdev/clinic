@@ -1,4 +1,4 @@
-import { TextInput, PasswordInput, Checkbox, Button, Paper, Title, Text, Anchor } from "@mantine/core"
+import { TextInput, PasswordInput, Button, Paper, Title, Text, Anchor } from "@mantine/core"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
 import { useState } from "react"
 import { showNotification } from "@mantine/notifications"
@@ -7,7 +7,6 @@ import { useLogin } from "../../../config/querys/login-query"
 const LoginForm = () => {
     const [userName, setUserName] = useState("")
     const [password, setPassword] = useState("")
-    const [rememberMe, setRememberMe] = useState(false)
     
     const loginMutation = useLogin()
 
@@ -93,8 +92,6 @@ const LoginForm = () => {
                             }}
                         />
                     </div>
-
-
 
                     <Button
                         type="submit"
