@@ -94,22 +94,7 @@ const LoginForm = () => {
                         />
                     </div>
 
-                    <div className="flex items-center justify-between">
-                        <Checkbox
-                            label="Remember Me"
-                            checked={rememberMe}
-                            onChange={(e) => setRememberMe(e.currentTarget.checked)}
-                            styles={{
-                                label: {
-                                    fontSize: "14px",
-                                    color: "#374151",
-                                },
-                            }}
-                        />
-                        <Anchor href="#" className="text-sm text-red-500 hover:text-red-600">
-                            Forgot Password?
-                        </Anchor>
-                    </div>
+
 
                     <Button
                         type="submit"
