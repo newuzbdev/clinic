@@ -1,32 +1,45 @@
 import { TextInput, PasswordInput, Checkbox, Button, Paper, Title, Text, Anchor } from "@mantine/core"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { showNotification } from "@mantine/notifications";
+import { showNotification } from "@mantine/notifications"
+import { useLogin } from "../../../config/querys/login-query"
 
 const LoginForm = () => {
-    const [email, setEmail] = useState("")
+    const [userName, setUserName] = useState("")
     const [password, setPassword] = useState("")
     const [rememberMe, setRememberMe] = useState(false)
-    const navigate = useNavigate();
+    
+    const loginMutation = useLogin()
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Fake login: if admin/admin, set user as admin
-        if (email === "admin" && password === "admin") {
-            localStorage.setItem("user", JSON.stringify({ role: "admin" }));
+        e.preventDefault()
+        
+        if (!userName.trim() || !password.trim()) {
             showNotification({
-                message: "Login successful!",
-                color: "green",
-            });
-            navigate("/");
-        } else {
-            showNotification({
-                message: "Invalid credentials. ",
+                message: "Please fill in all fields",
                 color: "red",
-              
-            });
+            })
+            return
         }
+
+        loginMutation.mutate(
+            { userName, password },
+            {
+                onSuccess: () => {
+                    showNotification({
+                        message: "Login successful!",
+                        color: "green",
+                    })
+                },
+                onError: (error: any) => {
+                    const errorMessage = error?.response?.data?.message || "Login failed. Please check your credentials."
+                    showNotification({
+                        message: errorMessage,
+                        color: "red",
+                    })
+                }
+            }
+        )
     }
 
     return (
@@ -41,11 +54,12 @@ const LoginForm = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <Text className="text-sm font-medium text-gray-700 mb-2">Email Address</Text>
+                        <Text className="text-sm font-medium text-gray-700 mb-2">Username</Text>
                         <TextInput
-                            placeholder="Enter Email Address"
-                            value={email}
-                            onChange={(e) => setEmail(e.currentTarget.value)}
+                            placeholder="Enter Username"
+                            value={userName}
+                            onChange={(e) => setUserName(e.currentTarget.value)}
+                            disabled={loginMutation.isPending}
                             leftSection={<Mail size={16} className="text-gray-400" />}
                             className="w-full"
                             styles={{
@@ -68,6 +82,7 @@ const LoginForm = () => {
                             leftSection={<Lock size={16} className="text-gray-400" />}
                             visibilityToggleIcon={({ reveal }) => (reveal ? <EyeOff size={16} /> : <Eye size={16} />)}
                             className="w-full"
+                            disabled={loginMutation.isPending}
                             styles={{
                                 input: {
                                     border: "1px solid #e5e7eb",
@@ -99,6 +114,8 @@ const LoginForm = () => {
                     <Button
                         type="submit"
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                        loading={loginMutation.isPending}
+                        disabled={loginMutation.isPending}
                         styles={{
                             root: {
                                 backgroundColor: "#4f46e5",
@@ -108,7 +125,7 @@ const LoginForm = () => {
                             },
                         }}
                     >
-                        Login
+                        {loginMutation.isPending ? "Signing In..." : "Login"}
                     </Button>
                 </form>
 

@@ -9,7 +9,11 @@ function useUser() {
   return user;
 }
 
-export function ProtectedRoute({ allowedRole }: { allowedRole: string }) {
+export function ProtectedRoute({
+  allowedRole
+}: {
+  allowedRole: string;
+}) {
   const user = useUser();
   const location = useLocation();
 
@@ -17,7 +21,7 @@ export function ProtectedRoute({ allowedRole }: { allowedRole: string }) {
     if (!user || user.role !== allowedRole) {
       showNotification({
         message: "Access denied. Only admin can access this page.",
-        color: "green",
+        color: "red",
         position: "bottom-right",
       });
     }
@@ -26,5 +30,6 @@ export function ProtectedRoute({ allowedRole }: { allowedRole: string }) {
   if (!user || user.role !== allowedRole) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
+  
   return <Outlet />;
 }

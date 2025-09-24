@@ -8,6 +8,12 @@ import { Notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 import { RouterProviders } from './providers/router-providers';
 import { ColorSchemeContext } from './providers/color-scheme-context';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 function App() {
   const [colorScheme, setColorScheme] = useLocalStorage<'light' | 'dark'>({
@@ -17,6 +23,7 @@ function App() {
   const toggleColorScheme = () => setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
   return (
     <ColorSchemeContext.Provider value={{ colorScheme, toggleColorScheme }}>
+       <QueryClientProvider client={queryClient}>
       <MantineProvider
         theme={{
           colors: {
@@ -32,6 +39,7 @@ function App() {
         <Notifications position="bottom-right" />
         <RouterProviders />
       </MantineProvider>
+      </QueryClientProvider>
     </ColorSchemeContext.Provider>
   );
 }
