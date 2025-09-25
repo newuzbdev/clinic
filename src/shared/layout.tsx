@@ -1,6 +1,7 @@
 import { AppShell } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks"
 import { Sidebar } from "./sidebar"
+import { Outlet } from "react-router-dom"
 
 import { useEffect } from "react"
 import { Header,  } from "./header"
@@ -8,11 +9,10 @@ import { useSidebar } from "../hooks/use-sidebar"
 import { HeaderTitleProvider } from "../providers/header-title-provider"
 
 interface MainLayoutProps {
-  children: React.ReactNode
   workspace?: "personal" | "organization"
 }
 
-export function MainLayout({ children }: MainLayoutProps) {
+export function MainLayout({ }: MainLayoutProps = {}) {
   const { width } = useViewportSize()
   const { isLg, setLg, collapsed } = useSidebar()
 
@@ -47,7 +47,7 @@ export function MainLayout({ children }: MainLayoutProps) {
             overflowY: "auto",
           }}
         >
-          {children}
+          <Outlet />
         </AppShell.Main>
       </AppShell>
     </HeaderTitleProvider>

@@ -11,7 +11,6 @@ import {
   DoorOpen,
   BriefcaseMedical,
   Share2,
-  UserCog,
 } from "lucide-react"
 import { useHeaderTitle } from "../providers/header-title-provider"
 import { useSidebar } from "../hooks/use-sidebar"
@@ -88,6 +87,7 @@ function NavSection({ title, items, currentPath }: NavSectionProps) {
           item.to === currentPath ||
           (item.to !== "/" &&
             (currentPath === item.to || currentPath.startsWith(item.to + "/")));
+        
         return (
           <NavItem
             {...rest}
@@ -120,7 +120,7 @@ export function Sidebar() {
     { icon: BriefcaseMedical, label: "Services", to: "/services", key: "services" },
     { icon: Share2, label: "Referal", to: "/referal", key: "referal" },
     { icon: Activity, label: "Rooms", to: "/rooms", key: "rooms" },
-    { icon: UserCog, label: "Users", to: "/users", key: "users" },
+    { icon: Users, label: "Users", to: "/users", key: "users" },
   ]
 
   // const hrmItems = [
@@ -185,7 +185,16 @@ export function Sidebar() {
 
         </div>
 
-        <ScrollArea style={{ flex: 1 }} p="md">
+        <ScrollArea
+          style={{
+            flex: 1,
+            height: "calc(100vh - 80px)",
+            maxHeight: "calc(100vh - 80px)"
+          }}
+          p="md"
+          scrollbarSize={6}
+          scrollHideDelay={1500}
+        >
           <NavSection title="Main Menu" items={mainMenuItems} currentPath={currentPath} />
           {/* <NavSection title="Applications" items={applicationItems} currentPath={currentPath} /> */}
           <NavSection title="Clinic" items={clinicItems} currentPath={currentPath} />
