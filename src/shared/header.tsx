@@ -5,15 +5,21 @@ import { AppShell, Group, Text, TextInput, ActionIcon, Menu, Avatar, UnstyledBut
 import { useColorScheme } from "../providers/color-scheme-context";
 import { useSidebar } from "../hooks/use-sidebar"
 import { useHeaderTitle } from "../providers/header-title-provider"
+import { useLogout } from "../config/querys/login-query"
 import { Menu as IconMenu2, Search as IconSearch, Bell as IconBell, Sun as IconSun, ChevronDown as IconChevronDown, User as IconUser, Settings as IconSettings, LogOut as IconLogout } from "lucide-react"
 
 
 export function Header() {
   const { toggleSidebar } = useSidebar()
   const { headerTitle } = useHeaderTitle()
+  const logoutMutation = useLogout()
 
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
+
+  const handleLogout = () => {
+    logoutMutation.mutate()
+  }
 
   return (
     <AppShell.Header>
@@ -65,8 +71,13 @@ export function Header() {
               <Menu.Item leftSection={<IconUser size={14} />}>Profile</Menu.Item>
               <Menu.Item leftSection={<IconSettings size={14} />}>Settings</Menu.Item>
               <Menu.Divider />
-              <Menu.Item leftSection={<IconLogout size={14} />} color="red">
-                Logout
+              <Menu.Item
+                leftSection={<IconLogout size={14} />}
+                color="red"
+                onClick={handleLogout}
+                disabled={logoutMutation.isPending}
+              >
+                {logoutMutation.isPending ? 'Logging out...' : 'Logout'}
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>

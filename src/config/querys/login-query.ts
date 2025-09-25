@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
 import { loginEndpoint } from "../api/endpoint"
-import { axiosPublic } from "../api/api"
+import { axiosPublic, axiosPrivate } from "../api/api"
 import type { AxiosError, AxiosResponse } from "axios"
 
 export type TLoginRequest = {
@@ -41,6 +41,33 @@ export const useLogin = () => {
         onError: async ({ response }: AxiosError<any>) => {
             console.log(response);
 
+        }
+    })
+}
+
+export const useLogout = () => {
+    const navigate = useNavigate()
+
+    return useMutation({
+        mutationKey: [loginEndpoint.logOut],
+        mutationFn: async () => {
+            return await axiosPrivate.get(loginEndpoint.logOut)
+        },
+        onSuccess: async () => {
+            // Clear stored tokens and user data
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('user')
+            
+            // Navigate to login page
+            navigate('/login')
+        },
+        onError: async ({ response }: AxiosError<any>) => {
+            console.log(response);
+            
+            // Even if logout fails on server, clear local storage and redirect
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('user')
+            navigate('/login')
         }
     })
 }
