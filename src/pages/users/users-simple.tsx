@@ -1,4 +1,4 @@
-import { Container, Text, Button, Table, Title } from '@mantine/core'
+import { Container, Button, Table, Title } from '@mantine/core'
 
 const UsersSimple = () => {
   console.log('UsersSimple component rendering...')

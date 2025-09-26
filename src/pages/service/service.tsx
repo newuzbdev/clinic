@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Container, Text, Title } from '@mantine/core'
+import { Container, Title } from '@mantine/core'
 import ServiceTable from './ui/service-table'
 import ServiceModal from './ui/service-modal'
 import { type TService } from '../../config/querys/service-query'

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Container, Text, Title } from '@mantine/core'
+import { Container,  Title } from '@mantine/core'
 import UsersTable from './ui/users-table'
 import UsersModal from './ui/users-modal'
 import { type TUser } from '../../config/querys/users-query'

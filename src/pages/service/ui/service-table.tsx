@@ -5,7 +5,6 @@ import {
   ActionIcon,
   Group,
   Text,
-  Badge,
   LoadingOverlay,
   Alert,
   Box,

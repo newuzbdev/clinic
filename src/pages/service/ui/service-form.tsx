@@ -112,10 +112,6 @@ const ServiceForm = ({ service, onSuccess, onCancel }: ServiceFormProps) => {
     label: departament.name
   })) || []
 
-  const hasFileOptions = [
-    { value: '0', label: 'No' },
-    { value: '1', label: 'Yes' }
-  ]
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
