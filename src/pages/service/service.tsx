@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Container, Text } from '@mantine/core'
+import { Container, Text, Title } from '@mantine/core'
 import ServiceTable from './ui/service-table'
 import ServiceModal from './ui/service-modal'
 import { type TService } from '../../config/querys/service-query'
@@ -24,8 +24,8 @@ const Service = () => {
   }
 
   return (
-    <Container size="xl" px="md">
-      <Text size="xl" fw={700} mb="md">Services Management Page</Text>
+    <Container size="xl" px="" mt="2xl">
+      <Title order={1} mb="md">Services Management Page</Title>
       <ServiceTable
         onEdit={handleEditService}
         onAdd={handleAddService}

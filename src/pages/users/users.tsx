@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Container, Text } from '@mantine/core'
+import { Container, Text, Title } from '@mantine/core'
 import UsersTable from './ui/users-table'
 import UsersModal from './ui/users-modal'
 import { type TUser } from '../../config/querys/users-query'
@@ -25,13 +25,13 @@ const Users = () => {
 
 
   return (
-    <Container size="xl" px="md">
-      <Text size="xl" fw={700} mb="md">Users Management Page</Text>
+    <Container size="xl" px="" mt="2xl">
+      <Title order={1} mb="md">Users Management Page</Title>
       <UsersTable
         onEdit={handleEditUser}
         onAdd={handleAddUser}
       />
-      
+
       <UsersModal
         opened={modalOpened}
         onClose={handleCloseModal}

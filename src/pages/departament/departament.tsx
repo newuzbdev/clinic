@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Container, Text } from '@mantine/core'
+import { Container, Title } from '@mantine/core'
 import DepartamentTable from './ui/departament-table'
 import DepartamentModal from './ui/departament-modal'
 import { type TDepartament } from '../../config/querys/departament-query'
@@ -24,8 +24,8 @@ const Departament = () => {
   }
 
   return (
-    <Container size="xl" px="md">
-      <Text size="xl" fw={700} mb="md">Departaments Management Page</Text>
+    <Container size="xl" px="" mt="2xl">
+      <Title order={1} mb="md">Departaments Management Page</Title>
       <DepartamentTable
         onEdit={handleEditDepartament}
         onAdd={handleAddDepartament}
