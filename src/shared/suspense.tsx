@@ -5,7 +5,7 @@ import { Suspense as ReactSuspense } from 'react'
 export const LoadingScreen = () => {
 	return (
 		<div className='fixed inset-0 grid items-center w-full h-full justify-items-center'>
-			<Loader2 size='large' />
+			<Loader2 size={24} />
 		</div>
 	)
 }

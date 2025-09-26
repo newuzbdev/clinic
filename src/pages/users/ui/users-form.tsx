@@ -29,7 +29,7 @@ const UsersForm = ({ user, onSuccess, onCancel }: UsersFormProps) => {
       username: user?.username || '',
       password: '',
       phone: user?.phone || '',
-      role_id: user?.role_id || 4,
+      role_id: user?.role_id.toString() || '4',
       chat_id: user?.chat_id || 1,
       photo: user?.photo || ''
     },
@@ -54,7 +54,7 @@ const UsersForm = ({ user, onSuccess, onCancel }: UsersFormProps) => {
         if (value && value.length < 6) return 'Password must be at least 6 characters'
         return null
       },
-      role_id: (value: number) => !value ? 'Role is required' : null
+      role_id: (value: string) => !value ? 'Role is required' : null
     }
   })
 
@@ -65,7 +65,7 @@ const UsersForm = ({ user, onSuccess, onCancel }: UsersFormProps) => {
         username: user.username,
         password: '',
         phone: user.phone,
-        role_id: user.role_id,
+        role_id: user.role_id.toString(),
         chat_id: user.chat_id,
         photo: user.photo
       })
@@ -74,21 +74,23 @@ const UsersForm = ({ user, onSuccess, onCancel }: UsersFormProps) => {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
+      const roleId = parseInt(values.role_id)
+
       if (isEditing && user) {
         const updateData: TUpdateUserRequest = {
           name: values.name,
           username: values.username,
           phone: values.phone,
-          role_id: values.role_id,
+          role_id: roleId,
           chat_id: values.chat_id,
           photo: values.photo
         }
-        
+
         await updateUserMutation.mutateAsync({
           id: user.id,
           userData: updateData
         })
-        
+
         notifications.show({
           title: 'Success',
           message: 'User updated successfully',
@@ -100,20 +102,20 @@ const UsersForm = ({ user, onSuccess, onCancel }: UsersFormProps) => {
           username: values.username,
           password: values.password,
           phone: values.phone,
-          role_id: values.role_id,
+          role_id: roleId,
           chat_id: values.chat_id,
           photo: values.photo
         }
-        
+
         await addUserMutation.mutateAsync(addData)
-        
+
         notifications.show({
           title: 'Success',
           message: 'User created successfully',
           color: 'green'
         })
       }
-      
+
       form.reset()
       onSuccess()
     } catch (error) {

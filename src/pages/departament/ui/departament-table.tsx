@@ -5,103 +5,74 @@ import {
   ActionIcon,
   Group,
   Text,
-  Badge,
   LoadingOverlay,
   Alert,
   Box,
   Modal
 } from '@mantine/core'
 import { Edit, Trash2, Plus } from 'lucide-react'
-import { useGetAllUsers, useDeleteUser, type TUser } from '../../../config/querys/users-query'
+import { useGetAllDepartaments, useDeleteDepartament, type TDepartament } from '../../../config/querys/departament-query'
 import { notifications } from '@mantine/notifications'
 
-interface UsersTableProps {
-  onEdit: (user: TUser) => void
+interface DepartamentTableProps {
+  onEdit: (departament: TDepartament) => void
   onAdd: () => void
 }
 
-const UsersTable = ({ onEdit, onAdd }: UsersTableProps) => {
-  const { data: users, isLoading, error } = useGetAllUsers()
-  const deleteUserMutation = useDeleteUser()
+const DepartamentTable = ({ onEdit, onAdd }: DepartamentTableProps) => {
+  const { data: departaments, isLoading, error } = useGetAllDepartaments()
+  const deleteDepartamentMutation = useDeleteDepartament()
   const [deleteModalOpened, setDeleteModalOpened] = useState(false)
-  const [userToDelete, setUserToDelete] = useState<TUser | null>(null)
+  const [departamentToDelete, setDepartamentToDelete] = useState<TDepartament | null>(null)
 
-  const handleDeleteClick = (user: TUser) => {
-    setUserToDelete(user)
+  const handleDeleteClick = (departament: TDepartament) => {
+    setDepartamentToDelete(departament)
     setDeleteModalOpened(true)
   }
 
   const handleConfirmDelete = async () => {
-    if (!userToDelete) return
+    if (!departamentToDelete) return
     try {
-      await deleteUserMutation.mutateAsync(userToDelete.id)
+      await deleteDepartamentMutation.mutateAsync(departamentToDelete.id)
       notifications.show({
         title: 'Success',
-        message: 'User deleted successfully',
+        message: 'Departament deleted successfully',
         color: 'green'
       })
       setDeleteModalOpened(false)
-      setUserToDelete(null)
+      setDepartamentToDelete(null)
     } catch (error) {
       notifications.show({
         title: 'Error',
-        message: 'Failed to delete user',
+        message: 'Failed to delete departament',
         color: 'red'
       })
-    }
-  }
-
-  const getRoleBadgeColor = (roleId: number) => {
-    switch (roleId) {
-      case 1: return 'red'    // Admin
-      case 2: return 'blue'   // Doctor
-      case 3: return 'green'  // Nurse
-      case 4: return 'yellow' // Receptionist
-      default: return 'gray'
-    }
-  }
-
-  const getRoleName = (roleId: number) => {
-    switch (roleId) {
-      case 1: return 'Admin'
-      case 2: return 'Doctor'
-      case 3: return 'Nurse'
-      case 4: return 'Receptionist'
-      default: return 'Unknown'
     }
   }
 
   if (error) {
     return (
       <Alert color="red" title="Error">
-        Failed to load users: {error.message}
+        Failed to load departaments: {error.message}
       </Alert>
     )
   }
 
-  const rows = users?.map((user) => (
-    <Table.Tr key={user.id}>
+  const rows = departaments?.map((departament) => (
+    <Table.Tr key={departament.id}>
       <Table.Td>
         <Text size="sm" fw={500}>
-          {user.name}
-        </Text>
-        <Text size="xs" c="dimmed">
-          {user.username}
+          {departament.name}
         </Text>
       </Table.Td>
       <Table.Td>
         <Text size="sm" c="dimmed">
-          {user.phone}
+          {departament.owner_id}
         </Text>
       </Table.Td>
       <Table.Td>
-        <Badge color={getRoleBadgeColor(user.role_id)} variant="light">
-          {getRoleName(user.role_id)}
-        </Badge>
-      </Table.Td>
-      <Table.Td>
         <Text size="sm" c="dimmed">
-          {new Date(user.createdAt).toLocaleDateString()}
+          {new Date(departament.createdAt).toLocaleDateString()}
         </Text>
       </Table.Td>
       <Table.Td>
@@ -109,15 +80,15 @@ const UsersTable = ({ onEdit, onAdd }: UsersTableProps) => {
           <ActionIcon
             variant="subtle"
             color="blue"
-            onClick={() => onEdit(user)}
+            onClick={() => onEdit(departament)}
           >
             <Edit size={16} />
           </ActionIcon>
           <ActionIcon
             variant="subtle"
             color="red"
-            onClick={() => handleDeleteClick(user)}
-            loading={deleteUserMutation.isPending}
+            onClick={() => handleDeleteClick(departament)}
+            loading={deleteDepartamentMutation.isPending}
           >
             <Trash2 size={16} />
           </ActionIcon>
@@ -129,16 +100,16 @@ const UsersTable = ({ onEdit, onAdd }: UsersTableProps) => {
   return (
     <Box pos="relative">
       <LoadingOverlay visible={isLoading} />
-      
+
       <Group justify="space-between" mb="md">
         <Text size="lg" fw={600}>
-          Users Management
+          Departaments Management
         </Text>
         <Button
           leftSection={<Plus size={16} />}
           onClick={onAdd}
         >
-          Add User
+          Add Departament
         </Button>
       </Group>
 
@@ -146,8 +117,7 @@ const UsersTable = ({ onEdit, onAdd }: UsersTableProps) => {
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Name</Table.Th>
-            <Table.Th>Phone</Table.Th>
-            <Table.Th>Role</Table.Th>
+            <Table.Th>Owner ID</Table.Th>
             <Table.Th>Created At</Table.Th>
             <Table.Th>Actions</Table.Th>
           </Table.Tr>
@@ -155,9 +125,9 @@ const UsersTable = ({ onEdit, onAdd }: UsersTableProps) => {
         <Table.Tbody>
           {rows?.length ? rows : (
             <Table.Tr>
-              <Table.Td colSpan={5}>
+              <Table.Td colSpan={4}>
                 <Text ta="center" c="dimmed">
-                  No users found
+                  No departaments found
                 </Text>
               </Table.Td>
             </Table.Tr>
@@ -172,13 +142,13 @@ const UsersTable = ({ onEdit, onAdd }: UsersTableProps) => {
         centered
       >
         <Text>
-          Are you sure you want to delete user "{userToDelete?.username}"? This action cannot be undone.
+          Are you sure you want to delete departament "{departamentToDelete?.name}"? This action cannot be undone.
         </Text>
         <Group justify="flex-end" mt="md">
           <Button variant="subtle" onClick={() => setDeleteModalOpened(false)}>
             Cancel
           </Button>
-          <Button color="red" onClick={handleConfirmDelete} loading={deleteUserMutation.isPending}>
+          <Button color="red" onClick={handleConfirmDelete} loading={deleteDepartamentMutation.isPending}>
             Delete
           </Button>
         </Group>
@@ -187,4 +157,4 @@ const UsersTable = ({ onEdit, onAdd }: UsersTableProps) => {
   )
 }
 
-export default UsersTable
+export default DepartamentTable
